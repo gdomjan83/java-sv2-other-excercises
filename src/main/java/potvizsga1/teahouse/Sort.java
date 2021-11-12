@@ -5,7 +5,7 @@ public enum Sort {
     ROOIBOS("tele van antioxidánsokkal"), HERBAL_TEA("sok különféle gyógyhatása van"),
     FRUIT_TEA("finom, édes ízű");
 
-    private String additionalInfo;
+    private final String additionalInfo;
 
     Sort(String additionalInfo) {
         this.additionalInfo = additionalInfo;
