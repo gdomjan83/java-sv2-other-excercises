@@ -1,4 +1,4 @@
-package algorithms;
+package potvizsga3.algorithms;
 
 import org.junit.jupiter.api.Test;
 
