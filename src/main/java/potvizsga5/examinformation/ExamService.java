@@ -50,7 +50,8 @@ public class ExamService {
         List<String> failed = findPeopleFailed();
         return results.entrySet().stream()
                 .filter(e -> !failed.contains(e.getKey()))
-                .sorted(((o1, o2) -> (o2.getValue().getTheory() + o2.getValue().getPractice()) - (o1.getValue().getPractice() + o1.getValue().getTheory())))
+                .sorted(((Comparator<Map.Entry<String, ExamResult>>) (o1, o2) -> o1.getValue().getTheory() + o1.getValue().getPractice()
+                        - o2.getValue().getTheory() - o2.getValue().getPractice()).reversed())
                 .map(e -> e.getKey())
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("No result found."));
