@@ -41,12 +41,15 @@ public class SkiRental {
     }
 
     public String getNameOfPeopleWithBiggestFoot() {
-        List<String> filteredNames = rentals.entrySet().stream()
+        int biggestSize = rentals.entrySet().stream()
                 .filter(e -> e.getValue().hasRentedBoth())
-                .sorted(Comparator.comparing(e -> e.getKey()))
-                .sorted(Comparator.comparingInt(e -> e.getValue().getSizeOfBoot()))
-                .map(Map.Entry::getKey)
-                .toList();
-        return filteredNames.get(filteredNames.size() - 1);
+                .mapToInt(e -> e.getValue().getSizeOfBoot())
+                .max()
+                .orElse(0);
+        return rentals.entrySet().stream()
+                .filter(e -> e.getValue().hasRentedBoth() && e.getValue().getSizeOfBoot() == biggestSize)
+                .sorted(Comparator.comparing(r -> r.getKey()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Cannot find person.")).getKey();
     }
 }
