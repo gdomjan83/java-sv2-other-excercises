@@ -1,4 +1,4 @@
-Név;lécméret bakancsméret
+    Név;lécméret bakancsméret
 John Doe;120 37
 Jack Smith;140 39
 Peter Taylor;170 45
