@@ -17,8 +17,9 @@ public class DogTypes {
     }
 
     public List<String> getDogsByCountry(String country) {
+
         //language=sql
         return jdbcTemplate.query("select (name) from dog_types where country = ? order by name",
-                (rs, i) -> rs.getString(1).toLowerCase());
+                (rs, i) -> rs.getString(1).toLowerCase(), country.toUpperCase());
     }
 }
