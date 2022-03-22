@@ -1,5 +1,7 @@
 package kepesitovizsga3.zoo;
 
+import java.util.Objects;
+
 public class ZooAnimal {
     private String name;
     private int length;
@@ -36,5 +38,18 @@ public class ZooAnimal {
 
     public void setType(AnimalType type) {
         this.type = type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ZooAnimal zooAnimal = (ZooAnimal) o;
+        return Objects.equals(name, zooAnimal.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }
