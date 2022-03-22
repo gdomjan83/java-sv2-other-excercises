@@ -7,14 +7,12 @@ import java.util.*;
 
 public class Zoo {
     private Set<ZooAnimal> animals = new HashSet<>();
-    private DataSource dataSource;
     private JdbcTemplate jdbcTemplate;
 
     public Zoo() {
     }
 
     public Zoo(DataSource dataSource) {
-        this.dataSource = dataSource;
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
@@ -67,12 +65,7 @@ public class Zoo {
     public Map<AnimalType, Integer> getAnimalStatistics() {
         Map<AnimalType, Integer> animalTypes = new HashMap<>();
         for (ZooAnimal actual : animals) {
-            AnimalType key = actual.getType();
-            if (animalTypes.containsKey(key)) {
-                animalTypes.put(key, animalTypes.get(key) + 1);
-            } else {
-                animalTypes.put(key, 1);
-            }
+            animalTypes.compute(actual.getType(), (k, v) -> (v == null) ? 1 : v + 1);
         }
         return animalTypes;
     }
