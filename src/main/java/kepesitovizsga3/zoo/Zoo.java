@@ -76,4 +76,38 @@ public class Zoo {
         }
         return animalTypes;
     }
+
+    public void loadAnimals() {
+        int rows = jdbcTemplate.queryForObject("select count(id) from animals", (rs, i) -> rs.getInt("count(id)"));
+        for (int i = 1; i <= rows; i++) {
+            addAnimal(getAnimalFromDB(i));
+        }
+    }
+
+    public void addAnimalToDatabase(ZooAnimal animal) {
+        jdbcTemplate.update("insert into animals (animal_name, length_of_member, weight, animal_type) values (?, ?, ?, ?)",
+                animal.getName(), animal.getLength(), animal.getWeight(), animal.getType().name());
+    }
+
+    private ZooAnimal getAnimalFromDB(int row) {
+        return jdbcTemplate.queryForObject("select * from animals where id = ?",
+                (rs, i) -> createAnimal(
+                        rs.getString("animal_name"),
+                        rs.getInt("length_of_member"),
+                        rs.getLong("weight"),
+                        rs.getString("animal_type")), row);
+    }
+
+    private ZooAnimal createAnimal(String name, int length, long weight, String type) {
+        switch(AnimalType.valueOf(type)) {
+            case ELEPHANT:
+                return new Elephant(name, length, weight);
+            case GIRAFFE:
+                return new Giraffe(name, length);
+            case LION:
+                return new Lion(name);
+            default:
+                throw new IllegalArgumentException("Animal type incorrect.");
+        }
+    }
 }

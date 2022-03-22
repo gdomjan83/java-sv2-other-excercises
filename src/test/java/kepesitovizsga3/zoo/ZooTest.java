@@ -32,22 +32,22 @@ public class ZooTest {
         zoo.addAnimal(new Elephant("Serafina", 1, 3100));
         zoo.addAnimal(new Lion("Kopa"));
 
-//        try {
-//            MariaDbDataSource dataSource = new MariaDbDataSource();
-//            dataSource.setUrl("jdbc:mariadb://localhost:3306/zoo?useUnicode=true");
-//            dataSource.setUser("root");
-//            dataSource.setPassword("root456");
-//
-//            Flyway fw = Flyway.configure().locations("/db/migration/zoo")dataSource(dataSource).load();
-//            fw.clean();
-//            fw.migrate();
-//
-//            zooDatabase = new Zoo(dataSource);
-//            zooDatabase.loadAnimals();
-//
-//        } catch (SQLException sqle) {
-//            throw new IllegalStateException("Can not reach database.", sqle);
-//        }
+        try {
+            MariaDbDataSource dataSource = new MariaDbDataSource();
+            dataSource.setUrl("jdbc:mariadb://localhost:3306/zoo?useUnicode=true");
+            dataSource.setUser("root");
+            dataSource.setPassword("root456");
+
+            Flyway fw = Flyway.configure().locations("/db/migration/zoo").dataSource(dataSource).load();
+            fw.clean();
+            fw.migrate();
+
+            zooDatabase = new Zoo(dataSource);
+            zooDatabase.loadAnimals();
+
+        } catch (SQLException sqle) {
+            throw new IllegalStateException("Can not reach database.", sqle);
+        }
     }
 
     @Test
@@ -122,37 +122,47 @@ public class ZooTest {
         Assertions.assertEquals(3, statistics.get(AnimalType.ELEPHANT));
     }
 
-//    @Test
-//    public void testAddAnimal() {
-//        ZooAnimal giraffe = new Giraffe("Balboa", 3);
-//
-//        Assertions.assertFalse(zooDatabase.getAnimals().contains(giraffe));
-//        Assertions.assertEquals(13, zooDatabase.getAnimals().size());
-//
-//        zooDatabase.addAnimal(giraffe);
-//        zooDatabase.loadAnimals();
-//
-//        Assertions.assertTrue(zooDatabase.getAnimals().contains(giraffe));
-//        Assertions.assertEquals(14, zooDatabase.getAnimals().size());
-//    }
-//
-//    @Test
-//    public void testAddAnimalTwice() {
-//        ZooAnimal giraffe = new Giraffe("Balboa", 3);
-//
-//        Assertions.assertFalse(zooDatabase.getAnimals().contains(giraffe));
-//        Assertions.assertEquals(13, zooDatabase.getAnimals().size());
-//
-//        zooDatabase.addAnimal(giraffe);
-//        zooDatabase.loadAnimals();
-//
-//        Assertions.assertTrue(zooDatabase.getAnimals().contains(giraffe));
-//        Assertions.assertEquals(14, zooDatabase.getAnimals().size());
-//
-//        zooDatabase.addAnimal(giraffe);
-//        zooDatabase.loadAnimals();
-//
-//        Assertions.assertTrue(zooDatabase.getAnimals().contains(giraffe));
-//        Assertions.assertEquals(14, zooDatabase.getAnimals().size());
-//    }
+    @Test
+    public void testAddAnimal() {
+        ZooAnimal giraffe = new Giraffe("Balboa", 3);
+
+        Assertions.assertFalse(zooDatabase.getAnimals().contains(giraffe));
+        Assertions.assertEquals(13, zooDatabase.getAnimals().size());
+
+        zooDatabase.addAnimal(giraffe);
+        zooDatabase.loadAnimals();
+
+        Assertions.assertTrue(zooDatabase.getAnimals().contains(giraffe));
+        Assertions.assertEquals(14, zooDatabase.getAnimals().size());
+    }
+
+    @Test
+    public void testAddAnimalTwice() {
+        ZooAnimal giraffe = new Giraffe("Balboa", 3);
+
+        Assertions.assertFalse(zooDatabase.getAnimals().contains(giraffe));
+        Assertions.assertEquals(13, zooDatabase.getAnimals().size());
+
+        zooDatabase.addAnimal(giraffe);
+        zooDatabase.loadAnimals();
+
+        Assertions.assertTrue(zooDatabase.getAnimals().contains(giraffe));
+        Assertions.assertEquals(14, zooDatabase.getAnimals().size());
+
+        zooDatabase.addAnimal(giraffe);
+        zooDatabase.loadAnimals();
+
+        Assertions.assertTrue(zooDatabase.getAnimals().contains(giraffe));
+        Assertions.assertEquals(14, zooDatabase.getAnimals().size());
+    }
+
+    @Test
+    void testAddAnimalToDatabase() {
+        ZooAnimal elephant = new Elephant("Dumbo", 5, 4500);
+
+        zooDatabase.addAnimalToDatabase(elephant);
+        zooDatabase.loadAnimals();
+
+        Assertions.assertEquals(14, zooDatabase.getAnimals().size());
+    }
 }
